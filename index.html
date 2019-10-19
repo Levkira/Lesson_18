@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lesson 18</title>
+    <style>
+        .container {
+            display: block;
+            width: 50%;
+            margin: 50px auto 0;
+            font-family: sans-serif;
+		}
+        .group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .group h1 {
+            font-family: sans-serif;
+            font-weight: lighter;
+        }
+        .text {
+            font-size: 16px;
+            padding: 7px;
+            width: 350px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+        }
+        .add-button {
+            width: 100px;
+            height: 30px;
+            background-color: #08be11;
+            border: 1px solid #08be11;
+            color: #fff;
+            font-size: 16px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        .notes {
+            width: 475px;
+        }
+        .notes-list {
+			padding: 0;
+			margin: 0;
+			list-style: none;
+        }
+        .notes-list>li {
+            display: flex;
+            align-items: baseline;
+        }
+        .notes-list>li>p {
+            flex-grow: 3;
+            overflow-wrap: break-word;
+            max-width: 293px;
+        }
+        .remove-button, .done-button, .update-button {
+            height: 20px;
+            margin-left: 5px;
+            color: #fff;
+            background-color: #0abfcc;
+            border: 1px solid #0abfcc;
+            cursor: pointer;
+        }
+        .done-button:disabled, .update-button:disabled {
+            background-color: #aeafaf;
+            border: 1px solid #aeafaf;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="group">
+            <h1>TODO LIST</h1>
+            <input class="text" type="text" placeholder="Текст заметки">
+            <button class="add-button">Add</button>
+        </div>
+        <div class="notes">
+            <ul class="notes-list"></ul>
+        </div>
+    </div>
+<script>
+    const toDo = {
+        lastId: 0,
+        notes: [],
+        createNote: function(textNote) {
+            let existedNote = this.notes.findIndex(function(el) {
+                if(el.text === textNote) {
+                    return true;
+                }    
+            });
+            if(existedNote >= 0) {
+                alert('Note already exists!');
+                return;
+            }
+            let newNote = {
+                text:textNote,
+                date: new Date(),
+                isDone: false,
+                id: ++this.lastId,
+            };
+            this.notes.push(newNote);
+            this.showNote();
+        },
+        removeNote: function(id) {
+            let currentNoteId = this.notes.findIndex(function(note) {
+                if(note.id === id) {
+                    return true;
+                }
+            });
+            this.notes.splice(currentNoteId, 1);
+        },
+        updateNote: function(id, editText) {
+            let currentNoteId = this.notes.findIndex(function(note) {
+                if(note.id === id) {
+                    return true;
+                }
+            });
+            if(currentNoteId === -1) {
+                alert('Note does not exist!');
+                return;
+            }
+            this.notes[currentNoteId].text = editText;
+        },
+        setNoteStatus: function(id) {
+            let currentNoteId = this.notes.findIndex(function(note) {
+                if(note.id === id) {
+                    return true;
+                }
+            });
+            if(currentNoteId === -1) {
+                return;
+            }
+            this.notes[currentNoteId].isDone = !this.notes[currentNoteId].isDone;
+        },
+        showNote: function() {
+            let noteBlock = document.querySelector('.notes-list');
+            let noteElement = document.createElement('li');
+            noteBlock.append(noteElement);
+            let noteText = document.createElement('p');
+            noteElement.append(noteText);
+            let currentNote = this.notes[this.notes.length - 1];
+            let noteDate = currentNote.date.getDate() + '/' + (currentNote.date.getMonth()+1) + '/' + currentNote.date.getFullYear();
+            let done = currentNote.isDone ? 'Done' : 'Not done';
+            noteText.innerHTML = currentNote.text + ' , ' + noteDate;
+
+            let removeButton = document.createElement('button');
+			removeButton.classList.add('remove-button');
+			removeButton.innerText = 'Remove';
+            document.querySelector('li:last-child').append(removeButton);
+            removeButton.addEventListener('click', event => {
+                let agreement = confirm('Note will be deleted. Are you sure?');
+                if(agreement) {
+                    event.target.parentElement.remove();
+                }
+                toDo.removeNote (currentNote.id);
+            });
+            
+            let doneButton = document.createElement('button');
+			doneButton.classList.add('done-button');
+			doneButton.innerText = 'Done';
+			document.querySelector('li:last-child').append(doneButton);
+			doneButton.addEventListener('click', e => {
+					toDo.setNoteStatus(currentNote.id);
+					doneButton.setAttribute('disabled',false);
+					updateButton.setAttribute('disabled',false);	
+			});
+
+			let updateButton = document.createElement('button');
+			updateButton.classList.add('update-button');
+			updateButton.innerText = 'Update';
+			document.querySelector('li:last-child').append(updateButton);
+			updateButton.addEventListener('click', e => {
+			    let updatedNote = prompt('Enter new text');
+				    if (updatedNote.length){
+                        let agreement = confirm('Note will be changed. Are you sure?');
+                        if(agreement) {
+                            toDo.updateNote(currentNote.id, updatedNote);
+                            event.target.parentElement.firstChild.innerText = updatedNote  + ' , ' + noteDate;
+                        }
+				    } else {
+					    alert('Nothing changed!');
+				    }		
+			});
+        }
+    }   
+
+    const addButton = document.querySelector('.add-button');
+    addButton.addEventListener('click', e => {
+        let textEl = document.querySelector('.text');
+        let value = textEl.value.trim();
+        if (value.length === 0) {
+            return alert ('Note can not be empty!');
+        } else {
+            toDo.createNote(value);
+            textEl.value = '';
+        }
+    });
+</script>
+</body>
+</html>
