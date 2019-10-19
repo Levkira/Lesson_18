@@ -39,9 +39,9 @@
             width: 475px;
         }
         .notes-list {
-			padding: 0;
-			margin: 0;
-			list-style: none;
+            padding: 0;
+            margin: 0;
+            list-style: none;
         }
         .notes-list>li {
             display: flex;
@@ -143,8 +143,8 @@
             noteText.innerHTML = currentNote.text + ' , ' + noteDate;
 
             let removeButton = document.createElement('button');
-			removeButton.classList.add('remove-button');
-			removeButton.innerText = 'Remove';
+            removeButton.classList.add('remove-button');
+            removeButton.innerText = 'Remove';
             document.querySelector('li:last-child').append(removeButton);
             removeButton.addEventListener('click', event => {
                 let agreement = confirm('Note will be deleted. Are you sure?');
@@ -155,31 +155,31 @@
             });
             
             let doneButton = document.createElement('button');
-			doneButton.classList.add('done-button');
-			doneButton.innerText = 'Done';
-			document.querySelector('li:last-child').append(doneButton);
-			doneButton.addEventListener('click', e => {
-					toDo.setNoteStatus(currentNote.id);
-					doneButton.setAttribute('disabled',false);
-					updateButton.setAttribute('disabled',false);	
+            doneButton.classList.add('done-button');
+            doneButton.innerText = 'Done';
+            document.querySelector('li:last-child').append(doneButton);
+            doneButton.addEventListener('click', e => {
+                toDo.setNoteStatus(currentNote.id);
+                doneButton.setAttribute('disabled',false);
+                updateButton.setAttribute('disabled',false);	
 			});
 
-			let updateButton = document.createElement('button');
-			updateButton.classList.add('update-button');
-			updateButton.innerText = 'Update';
-			document.querySelector('li:last-child').append(updateButton);
-			updateButton.addEventListener('click', e => {
-			    let updatedNote = prompt('Enter new text');
-				    if (updatedNote.length){
-                        let agreement = confirm('Note will be changed. Are you sure?');
-                        if(agreement) {
-                            toDo.updateNote(currentNote.id, updatedNote);
-                            event.target.parentElement.firstChild.innerText = updatedNote  + ' , ' + noteDate;
-                        }
-				    } else {
-					    alert('Nothing changed!');
-				    }		
-			});
+            let updateButton = document.createElement('button');
+            updateButton.classList.add('update-button');
+            updateButton.innerText = 'Update';
+            document.querySelector('li:last-child').append(updateButton);
+            updateButton.addEventListener('click', e => {
+                let updatedNote = prompt('Enter new text');
+                if(updatedNote.length){
+                    let agreement = confirm('Note will be changed. Are you sure?');
+                    if(agreement) {
+                        toDo.updateNote(currentNote.id, updatedNote);
+                        event.target.parentElement.firstChild.innerText = updatedNote  + ' , ' + noteDate;
+                    }
+                } else {
+                    alert('Nothing changed!');
+                }		
+            });
         }
     }   
 
