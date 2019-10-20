@@ -185,6 +185,7 @@
 
     const addButton = document.querySelector('.add-button');
     addButton.addEventListener('click', e => {
+        e.preventDefault();
         let textEl = document.querySelector('.text');
         let value = textEl.value.trim();
         if (value.length === 0) {
