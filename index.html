@@ -141,18 +141,6 @@
             let noteDate = currentNote.date.getDate() + '/' + (currentNote.date.getMonth()+1) + '/' + currentNote.date.getFullYear();
             let done = currentNote.isDone ? 'Done' : 'Not done';
             noteText.innerHTML = currentNote.text + ' , ' + noteDate;
-
-            let removeButton = document.createElement('button');
-            removeButton.classList.add('remove-button');
-            removeButton.innerText = 'Remove';
-            document.querySelector('li:last-child').append(removeButton);
-            removeButton.addEventListener('click', event => {
-                let agreement = confirm('Note will be deleted. Are you sure?');
-                if(agreement) {
-                    event.target.parentElement.remove();
-                }
-                toDo.removeNote (currentNote.id);
-            });
             
             let doneButton = document.createElement('button');
             doneButton.classList.add('done-button');
@@ -179,6 +167,18 @@
                 } else {
                     alert('Nothing changed!');
                 }		
+            });
+
+            let removeButton = document.createElement('button');
+            removeButton.classList.add('remove-button');
+            removeButton.innerText = 'Remove';
+            document.querySelector('li:last-child').append(removeButton);
+            removeButton.addEventListener('click', event => {
+                let agreement = confirm('Note will be deleted. Are you sure?');
+                if(agreement) {
+                    event.target.parentElement.remove();
+                }
+                toDo.removeNote (currentNote.id);
             });
         }
     }   
