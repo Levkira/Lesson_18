@@ -139,7 +139,6 @@
             noteElement.append(noteText);
             let currentNote = this.notes[this.notes.length - 1];
             let noteDate = currentNote.date.getDate() + '/' + (currentNote.date.getMonth()+1) + '/' + currentNote.date.getFullYear();
-            let done = currentNote.isDone ? 'Done' : 'Not done';
             noteText.innerHTML = currentNote.text + ' , ' + noteDate;
             
             let doneButton = document.createElement('button');
